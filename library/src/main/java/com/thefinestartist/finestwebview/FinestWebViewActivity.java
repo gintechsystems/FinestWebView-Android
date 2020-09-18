@@ -238,9 +238,6 @@ public class FinestWebViewActivity extends AppCompatActivity
 
     FinestWebView.Builder builder = (FinestWebView.Builder) intent.getSerializableExtra("builder");
 
-    // We need access to the activity
-    builder.webViewActivity = this;
-
     // set theme before resolving attributes depending on those
     setTheme(builder.theme != null ? builder.theme : 0);
 

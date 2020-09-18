@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.ScrollFlags;
+
+import android.content.pm.PackageManager;
 import android.webkit.WebSettings;
 import com.thefinestartist.Base;
 import com.thefinestartist.finestwebview.enums.Position;
@@ -163,8 +165,6 @@ public class FinestWebView {
     protected String encoding;
     protected String data;
     protected String url;
-
-    protected FinestWebViewActivity webViewActivity;
 
     public Builder(@NonNull Activity activity) {
       this.context = activity;
@@ -937,8 +937,8 @@ public class FinestWebView {
     }
 
     public void close() {
-      if (webViewActivity != null) {
-        webViewActivity.exitActivity();
+      if (Ctx.getApplicationContext() instanceof FinestWebViewActivity) {
+        ((FinestWebViewActivity) Ctx.getApplicationContext()).exitActivity();
       }
     }
   }
