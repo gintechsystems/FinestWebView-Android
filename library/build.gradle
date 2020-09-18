@@ -32,8 +32,8 @@ dependencies {
 }
 
 publish {
-    userOrg = 'thefinestartist'
-    groupId = 'com.thefinestartist'
+    userOrg = 'gintechsystems'
+    groupId = 'com.gintechsystems'
     artifactId = 'finestwebview'
     publishVersion = versions.publishVersion
     desc = 'Beautiful and customizable Android Activity that shows web pages within an app.'
