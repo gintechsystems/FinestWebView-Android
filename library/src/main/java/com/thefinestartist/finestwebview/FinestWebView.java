@@ -936,7 +936,8 @@ public class FinestWebView {
 
     public void close() {
       if (context instanceof Activity) {
-        ((Activity) context).finish();
+        ((Activity) context).onBackPressed();
+        ((Activity) context).overridePendingTransition(animationOpenEnter, animationOpenExit);
       }
     }
   }
