@@ -164,6 +164,8 @@ public class FinestWebView {
     protected String data;
     protected String url;
 
+    protected FinestWebViewActivity webViewActivity;
+
     public Builder(@NonNull Activity activity) {
       this.context = activity;
       Base.initialize(activity);
@@ -935,9 +937,8 @@ public class FinestWebView {
     }
 
     public void close() {
-      if (context instanceof Activity) {
-        ((Activity) context).onBackPressed();
-        ((Activity) context).overridePendingTransition(animationOpenEnter, animationOpenExit);
+      if (webViewActivity != null) {
+        webViewActivity.exitActivity();
       }
     }
   }
