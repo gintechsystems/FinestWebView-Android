@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.DrawableRes;
 import com.google.android.material.appbar.AppBarLayout;
+
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.content.ContextCompat;
@@ -185,8 +186,6 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
   protected Integer webViewCacheMode;
   protected Integer webViewMixedContentMode;
   protected Boolean webViewOffscreenPreRaster;
-
-  protected WebViewClient webViewCustomClient;
 
   protected String injectJavaScript;
 
@@ -430,8 +429,6 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
 
     injectJavaScript = builder.injectJavaScript;
 
-    webViewCustomClient = builder.webViewCustomClient;
-
     mimeType = builder.mimeType;
     encoding = builder.encoding;
     data = builder.data;
@@ -631,14 +628,7 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
 
     { // WebView
       webView.setWebChromeClient(new MyWebChromeClient());
-
-      if (webViewCustomClient != null) {
-        webView.setWebViewClient(webViewCustomClient);
-      }
-      else {
-        webView.setWebViewClient(new MyWebViewClient());
-      }
-
+      webView.setWebViewClient(new MyWebViewClient());
       webView.setDownloadListener(downloadListener);
 
       WebSettings settings = webView.getSettings();

@@ -163,8 +163,6 @@ public class FinestWebView {
     protected Integer webViewMixedContentMode;
     protected Boolean webViewOffscreenPreRaster;
 
-    protected WebViewClient webViewCustomClient;
-
     protected String injectJavaScript;
 
     protected String mimeType;
@@ -657,11 +655,6 @@ public class FinestWebView {
       return this;
     }
 
-    public Builder setCustomWebViewClient(WebViewClient client) {
-      this.webViewCustomClient = client;
-      return this;
-    }
-
     /**
      * @deprecated As of release 1.0.1, replaced by {@link #setCustomAnimations(int, int, int, int)}
      */
@@ -952,6 +945,14 @@ public class FinestWebView {
 
       if (activity != null) {
         activity.exitActivity();
+      }
+    }
+
+    public void setCustomWebViewClient(WebViewClient client) {
+      FinestWebViewActivity activity = ActivityHelper.getWebViewActivity();
+
+      if (activity != null) {
+        activity.webView.setWebViewClient(client);
       }
     }
   }
