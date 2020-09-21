@@ -185,7 +185,8 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
   protected Integer webViewCacheMode;
   protected Integer webViewMixedContentMode;
   protected Boolean webViewOffscreenPreRaster;
-  protected Boolean webViewOverrideLoading;
+
+  protected WebViewClient webViewCustomClient;
 
   protected String injectJavaScript;
 
@@ -426,9 +427,10 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
     webViewCacheMode = builder.webViewCacheMode;
     webViewMixedContentMode = builder.webViewMixedContentMode;
     webViewOffscreenPreRaster = builder.webViewOffscreenPreRaster;
-    webViewOverrideLoading = builder.webViewOverrideLoading;
 
     injectJavaScript = builder.injectJavaScript;
+
+    webViewCustomClient = builder.webViewCustomClient;
 
     mimeType = builder.mimeType;
     encoding = builder.encoding;
@@ -629,7 +631,14 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
 
     { // WebView
       webView.setWebChromeClient(new MyWebChromeClient());
-      webView.setWebViewClient(new MyWebViewClient());
+
+      if (webViewCustomClient != null) {
+        webView.setWebViewClient(webViewCustomClient);
+      }
+      else {
+        webView.setWebViewClient(new MyWebViewClient());
+      }
+
       webView.setDownloadListener(downloadListener);
 
       WebSettings settings = webView.getSettings();
@@ -1138,8 +1147,7 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
         break;
     }
 
-    if (menuLayout.getVisibility() == View.VISIBLE
-        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+    if (menuLayout.getVisibility() == View.VISIBLE) {
       ViewHelper.setTranslationY(menuLayout,
           Math.max(verticalOffset, -getResources().getDimension(R.dimen.defaultMenuLayoutMargin)));
     }
@@ -1305,11 +1313,6 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
 
         return true; // If we return true, onPageStarted, onPageFinished won't be called.
       } else {
-        BroadCastManager.onShouldOverrideLoading(FinestWebViewActivity.this, key, url);
-        if (webViewOverrideLoading) {
-          return true;
-        }
-
         return super.shouldOverrideUrlLoading(view, url);
       }
     }

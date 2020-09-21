@@ -16,6 +16,9 @@ import com.google.android.material.appbar.AppBarLayout.LayoutParams.ScrollFlags;
 
 import android.content.pm.PackageManager;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
 import com.thefinestartist.Base;
 import com.thefinestartist.finestwebview.enums.Position;
 import com.thefinestartist.finestwebview.helpers.ActivityHelper;
@@ -159,7 +162,8 @@ public class FinestWebView {
     protected Integer webViewCacheMode;
     protected Integer webViewMixedContentMode;
     protected Boolean webViewOffscreenPreRaster;
-    protected Boolean webViewOverrideLoading;
+
+    protected WebViewClient webViewCustomClient;
 
     protected String injectJavaScript;
 
@@ -653,6 +657,11 @@ public class FinestWebView {
       return this;
     }
 
+    public Builder setCustomWebViewClient(WebViewClient client) {
+      this.webViewCustomClient = client;
+      return this;
+    }
+
     /**
      * @deprecated As of release 1.0.1, replaced by {@link #setCustomAnimations(int, int, int, int)}
      */
@@ -879,11 +888,6 @@ public class FinestWebView {
 
     public Builder webViewOffscreenPreRaster(boolean webViewOffscreenPreRaster) {
       this.webViewOffscreenPreRaster = webViewOffscreenPreRaster;
-      return this;
-    }
-
-    public Builder webViewOverrideLoading(boolean webViewOverrideLoading) {
-      this.webViewOverrideLoading = webViewOverrideLoading;
       return this;
     }
 
