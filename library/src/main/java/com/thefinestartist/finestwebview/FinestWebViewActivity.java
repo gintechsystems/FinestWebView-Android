@@ -46,6 +46,7 @@ import android.widget.TextView;
 import com.nineoldandroids.view.ViewHelper;
 import com.thefinestartist.converters.UnitConverter;
 import com.thefinestartist.finestwebview.enums.Position;
+import com.thefinestartist.finestwebview.helpers.ActivityHelper;
 import com.thefinestartist.finestwebview.helpers.BitmapHelper;
 import com.thefinestartist.finestwebview.helpers.ColorHelper;
 import com.thefinestartist.finestwebview.helpers.TypefaceHelper;
@@ -436,6 +437,8 @@ public class FinestWebViewActivity extends AppCompatActivity
   }
 
   protected void bindViews() {
+    ActivityHelper.setWebViewActivity(this);
+
     coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
     appBar = (AppBarLayout) findViewById(R.id.appBar);

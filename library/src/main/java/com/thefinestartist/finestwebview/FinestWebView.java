@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.webkit.WebSettings;
 import com.thefinestartist.Base;
 import com.thefinestartist.finestwebview.enums.Position;
+import com.thefinestartist.finestwebview.helpers.ActivityHelper;
 import com.thefinestartist.finestwebview.listeners.BroadCastManager;
 import com.thefinestartist.finestwebview.listeners.WebViewListener;
 import com.thefinestartist.utils.content.Ctx;
@@ -937,8 +938,10 @@ public class FinestWebView {
     }
 
     public void close() {
-      if (Ctx.getApplicationContext() instanceof FinestWebViewActivity) {
-        ((FinestWebViewActivity) Ctx.getApplicationContext()).exitActivity();
+      FinestWebViewActivity activity = ActivityHelper.getWebViewActivity();
+
+      if (activity != null) {
+        activity.exitActivity();
       }
     }
   }
