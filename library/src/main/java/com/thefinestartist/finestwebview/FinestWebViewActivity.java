@@ -63,13 +63,12 @@ import com.thefinestartist.utils.ui.ViewUtil;
 /**
  * Created by Leonardo on 11/14/15.
  */
-public class FinestWebViewActivity extends AppCompatActivity
-    implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+public class FinestWebViewActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener
+{
 
   protected int key;
 
   protected boolean rtl;
-  protected int theme;
 
   protected int statusBarColor;
 
@@ -1322,6 +1321,7 @@ public class FinestWebViewActivity extends AppCompatActivity
 
         return true;
       } else {
+        BroadCastManager.onShouldOverrideLoading(FinestWebViewActivity.this, key, url);
         return super.shouldOverrideUrlLoading(view, url);
       }
     }

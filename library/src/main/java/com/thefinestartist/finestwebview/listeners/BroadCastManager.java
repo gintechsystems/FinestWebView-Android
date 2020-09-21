@@ -106,6 +106,11 @@ public class BroadCastManager {
     sendBroadCast(context, intent);
   }
 
+  public static void onShouldOverrideLoading(Context context, int key, String url) {
+    Intent intent = getBaseIntent(key, Type.SHOULD_OVERRIDE_LOADING).putExtra(EXTRA_URL, url);
+    sendBroadCast(context, intent);
+  }
+
   public static void unregister(Context context, int key) {
     Intent intent = getBaseIntent(key, Type.UNREGISTER);
     sendBroadCast(context, intent);
@@ -137,6 +142,9 @@ public class BroadCastManager {
         break;
       case DOWNLOADED_START:
         onDownloadStart(intent);
+        break;
+      case SHOULD_OVERRIDE_LOADING:
+        onShouldOverrideUrlLoading(intent);
         break;
       case UNREGISTER:
         unregister();
@@ -195,6 +203,12 @@ public class BroadCastManager {
     }
   }
 
+  public void onShouldOverrideUrlLoading(Intent intent) {
+    for (WebViewListener listener : listeners) {
+      listener.onShouldOverrideUrlLoading(intent.getStringExtra(EXTRA_URL));
+    }
+  }
+
   private void unregister() {
     if (manager != null && receiver != null) {
       manager.unregisterReceiver(receiver);
@@ -202,6 +216,6 @@ public class BroadCastManager {
   }
 
   public enum Type {
-    PROGRESS_CHANGED, RECEIVED_TITLE, RECEIVED_TOUCH_ICON_URL, PAGE_STARTED, PAGE_FINISHED, LOAD_RESOURCE, PAGE_COMMIT_VISIBLE, DOWNLOADED_START, UNREGISTER
+    PROGRESS_CHANGED, RECEIVED_TITLE, RECEIVED_TOUCH_ICON_URL, PAGE_STARTED, PAGE_FINISHED, LOAD_RESOURCE, PAGE_COMMIT_VISIBLE, DOWNLOADED_START, SHOULD_OVERRIDE_LOADING, UNREGISTER
   }
 }
