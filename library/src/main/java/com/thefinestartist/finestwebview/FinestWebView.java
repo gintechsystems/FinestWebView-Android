@@ -159,6 +159,7 @@ public class FinestWebView {
     protected Integer webViewCacheMode;
     protected Integer webViewMixedContentMode;
     protected Boolean webViewOffscreenPreRaster;
+    protected Boolean webViewOverrideLoading;
 
     protected String injectJavaScript;
 
@@ -878,6 +879,11 @@ public class FinestWebView {
 
     public Builder webViewOffscreenPreRaster(boolean webViewOffscreenPreRaster) {
       this.webViewOffscreenPreRaster = webViewOffscreenPreRaster;
+      return this;
+    }
+
+    public Builder webViewOverrideLoading(boolean webViewOverrideLoading) {
+      this.webViewOverrideLoading = webViewOverrideLoading;
       return this;
     }
 

@@ -185,6 +185,7 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
   protected Integer webViewCacheMode;
   protected Integer webViewMixedContentMode;
   protected Boolean webViewOffscreenPreRaster;
+  protected Boolean webViewOverrideLoading;
 
   protected String injectJavaScript;
 
@@ -256,8 +257,7 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
     int textColorSecondary =
         typedArray.getColor(4, ContextCompat.getColor(this, R.color.finestSilver));
     int selectableItemBackground =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? typedArray.getResourceId(5, 0)
-            : R.drawable.selector_light_theme;
+            typedArray.getResourceId(5, 0);
     int selectableItemBackgroundBorderless =
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? typedArray.getResourceId(6, 0)
             : R.drawable.selector_light_theme;
@@ -426,6 +426,7 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
     webViewCacheMode = builder.webViewCacheMode;
     webViewMixedContentMode = builder.webViewMixedContentMode;
     webViewOffscreenPreRaster = builder.webViewOffscreenPreRaster;
+    webViewOverrideLoading = builder.webViewOverrideLoading;
 
     injectJavaScript = builder.injectJavaScript;
 
@@ -636,8 +637,7 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
       if (webViewSupportZoom != null) {
         settings.setSupportZoom(webViewSupportZoom);
       }
-      if (webViewMediaPlaybackRequiresUserGesture != null
-          && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      if (webViewMediaPlaybackRequiresUserGesture != null) {
         settings.setMediaPlaybackRequiresUserGesture(webViewMediaPlaybackRequiresUserGesture);
       }
       if (webViewBuiltInZoomControls != null) {
@@ -650,16 +650,14 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
           swipeRefreshLayout.removeViewAt(1);
         }
       }
-      if (webViewDisplayZoomControls != null
-          && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+      if (webViewDisplayZoomControls != null) {
         settings.setDisplayZoomControls(webViewDisplayZoomControls);
       }
 
       if (webViewAllowFileAccess != null) {
         settings.setAllowFileAccess(webViewAllowFileAccess);
       }
-      if (webViewAllowContentAccess != null
-          && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+      if (webViewAllowContentAccess != null) {
         settings.setAllowContentAccess(webViewAllowContentAccess);
       }
       if (webViewLoadWithOverviewMode != null) {
@@ -668,8 +666,7 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
       if (webViewSaveFormData != null) {
         settings.setSaveFormData(webViewSaveFormData);
       }
-      if (webViewTextZoom != null
-          && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+      if (webViewTextZoom != null) {
         settings.setTextZoom(webViewTextZoom);
       }
       if (webViewUseWideViewPort != null) {
@@ -717,18 +714,16 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
       if (webViewBlockNetworkImage != null) {
         settings.setBlockNetworkImage(webViewBlockNetworkImage);
       }
-      if (webViewBlockNetworkLoads != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+      if (webViewBlockNetworkLoads != null) {
         settings.setBlockNetworkLoads(webViewBlockNetworkLoads);
       }
       if (webViewJavaScriptEnabled != null) {
         settings.setJavaScriptEnabled(webViewJavaScriptEnabled);
       }
-      if (webViewAllowUniversalAccessFromFileURLs != null
-          && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+      if (webViewAllowUniversalAccessFromFileURLs != null) {
         settings.setAllowUniversalAccessFromFileURLs(webViewAllowUniversalAccessFromFileURLs);
       }
-      if (webViewAllowFileAccessFromFileURLs != null
-          && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+      if (webViewAllowFileAccessFromFileURLs != null) {
         settings.setAllowFileAccessFromFileURLs(webViewAllowFileAccessFromFileURLs);
       }
       if (webViewGeolocationDatabasePath != null) {
@@ -867,11 +862,7 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
       GradientDrawable drawable = new GradientDrawable();
       drawable.setCornerRadius(getResources().getDimension(R.dimen.defaultMenuCornerRadius));
       drawable.setColor(menuColor);
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-        menuBackground.setBackground(drawable);
-      } else {
-        menuBackground.setBackgroundDrawable(drawable);
-      }
+      menuBackground.setBackground(drawable);
 
       shadowLayout.setShadowColor(menuDropShadowColor);
       shadowLayout.setShadowSize(menuDropShadowSize);
@@ -1041,9 +1032,7 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
       webView.reload();
       hideMenu();
     } else if (viewId == R.id.menuFind) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-        webView.showFindDialog("", true);
-      }
+      webView.showFindDialog("", true);
       hideMenu();
     } else if (viewId == R.id.menuShareVia) {
       Intent sendIntent = new Intent();
@@ -1293,19 +1282,14 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
         intent.setDataAndType(Uri.parse(url), "video/*");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         view.getContext().startActivity(intent);
-        // If we return true, onPageStarted, onPageFinished won't be called.
-        return true;
+        return true; // If we return true, onPageStarted, onPageFinished won't be called.
       } else if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url
           .startsWith("mms:") || url.startsWith("mmsto:")) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         view.getContext().startActivity(intent);
         return true; // If we return true, onPageStarted, onPageFinished won't be called.
-      }
-      /*******************************************************
-       * Added in support for mailto:
-       *******************************************************/
-      else if (url.startsWith("mailto:")) {
+      } else if (url.startsWith("mailto:")) {
 
         MailTo mt = MailTo.parse(url);
 
@@ -1319,9 +1303,13 @@ public class FinestWebViewActivity extends AppCompatActivity implements AppBarLa
 
         startActivity(emailIntent);
 
-        return true;
+        return true; // If we return true, onPageStarted, onPageFinished won't be called.
       } else {
         BroadCastManager.onShouldOverrideLoading(FinestWebViewActivity.this, key, url);
+        if (webViewOverrideLoading) {
+          return true;
+        }
+
         return super.shouldOverrideUrlLoading(view, url);
       }
     }
